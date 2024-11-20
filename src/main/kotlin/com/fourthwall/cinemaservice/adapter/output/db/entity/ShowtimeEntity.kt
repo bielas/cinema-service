@@ -1,11 +1,6 @@
 package com.fourthwall.cinemaservice.adapter.output.db.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -24,4 +19,8 @@ data class ShowtimeEntity(
 
     @Column(name = "last_update_user_email", nullable = false)
     val userEmail: String,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_id", nullable = false)
+    val movie: MovieEntity
 )

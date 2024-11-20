@@ -26,5 +26,5 @@ data class Showtime(
 data class MovieRating(
     val movieId: String,
     val userEmail: String,
-    val rating: Int
+    val rating: Double
 )

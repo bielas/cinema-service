@@ -30,7 +30,6 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
     testImplementation("io.rest-assured:rest-assured:5.3.0")

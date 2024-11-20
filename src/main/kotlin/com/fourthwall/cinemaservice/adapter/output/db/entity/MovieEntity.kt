@@ -7,7 +7,6 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -23,18 +22,22 @@ data class MovieEntity(
     val businessId: String,
 
     @OneToMany(
+        mappedBy = "movie",
         cascade = [CascadeType.ALL],
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "movie_id")
-    val showtimes: List<ShowtimeEntity> = mutableListOf(),
+    val showtimes: List<ShowtimeEntity> = emptyList(),
 
     @OneToMany(
+        mappedBy = "movie",
         cascade = [CascadeType.ALL],
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "movie_id")
-    val ratings: List<MovieRatingEntity> = mutableListOf(),
-)
+    val ratings: List<MovieRatingEntity> = emptyList()
+) {
+    fun withUpdatedRatings(newRatings: List<MovieRatingEntity>): MovieEntity {
+        return this.copy(ratings = newRatings)
+    }
+}

@@ -3,6 +3,7 @@ package com.fourthwall.cinemaservice.adapter.output.db.repository
 import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieRatingEntity
 import com.fourthwall.cinemaservice.adapter.output.db.entity.ShowtimeEntity
 import com.fourthwall.cinemaservice.adapter.output.db.jpa.MovieJPARepository
+import com.fourthwall.cinemaservice.adapter.output.db.jpa.ShowtimeJPARepository
 import com.fourthwall.cinemaservice.adapter.output.db.repository.mapper.MovieDatabaseMappers
 import com.fourthwall.cinemaservice.domain.DomainException
 import com.fourthwall.cinemaservice.domain.movie.Movie
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 class DatabaseMovieRepository(
     private val movieJPARepository: MovieJPARepository,
+    private val showtimeJPARepository: ShowtimeJPARepository,
     private val movieDatabaseMappers: MovieDatabaseMappers
 ) : MovieRepository {
     override fun get(movieId: String): Movie {
@@ -26,34 +28,39 @@ class DatabaseMovieRepository(
 
     @Transactional
     override fun addRating(rating: MovieRating): Movie {
-        val movie =
-            movieJPARepository.findByBusinessId(rating.movieId)
-                ?: throw DomainException.DomainNotFoundException("Movie", rating.movieId)
+        val movie = movieJPARepository.findByBusinessId(rating.movieId)
+            ?: throw DomainException.DomainNotFoundException("Movie", rating.movieId)
 
-        movie.ratings.plus(
-            MovieRatingEntity(
+        val updatedMovie = movie.withUpdatedRatings(
+            movie.ratings + MovieRatingEntity(
                 userEmail = rating.userEmail,
                 rating = rating.rating,
+                movie = movie
             )
         )
-        return movieDatabaseMappers.toDomain(movie)
+
+        movieJPARepository.save(updatedMovie)
+
+        return movieDatabaseMappers.toDomain(updatedMovie)
     }
 
     @Transactional
     override fun updateSchedule(movieId: String, userEmail: String, showtimes: List<Showtime>): Movie {
-        val movie =
-            movieJPARepository.findByBusinessId(movieId)
-                ?: throw DomainException.DomainNotFoundException("Movie", movieId)
+        val movie = movieJPARepository.findByBusinessId(movieId)
+            ?: throw DomainException.DomainNotFoundException("Movie", movieId)
 
-        showtimes.forEach {
-            movie.showtimes.plus(
-                ShowtimeEntity(
-                    startTime = it.time,
-                    price = it.price,
-                    userEmail = userEmail
-                )
+        showtimeJPARepository.deleteAllByMovieId(movie.id!!)
+
+        val newShowtimeEntities = showtimes.map {
+            ShowtimeEntity(
+                startTime = it.time,
+                price = it.price,
+                userEmail = userEmail,
+                movie = movie
             )
         }
-        return movieDatabaseMappers.toDomain(movie)
+        showtimeJPARepository.saveAll(newShowtimeEntities)
+
+        return get(movieId)
     }
 }

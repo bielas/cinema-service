@@ -32,7 +32,7 @@ class AddMovieRatingCommandHandlerTest {
         // Given
         val movieId = "movie-123"
         val userEmail = "user@example.com"
-        val rating = 4
+        val rating = 4.0
         val command = AddMovieRatingCommand(movieId, userEmail, rating)
 
         val existingMovie = Movie(
@@ -73,7 +73,7 @@ class AddMovieRatingCommandHandlerTest {
     @Test
     fun `should throw exception when validation fails`() {
         // Given
-        val command = AddMovieRatingCommand("movie-123", "user@example.com", 4)
+        val command = AddMovieRatingCommand("movie-123", "user@example.com", 4.0)
         doThrow(IllegalArgumentException("Validation failed")).`when`(commandValidator).validateCommand(command)
 
         // When / Then
