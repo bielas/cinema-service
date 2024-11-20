@@ -67,6 +67,7 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 
 ### API Endpoints
 - **H2 Console**: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+- **Swagger**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ### H2 Database Configuration
 - **JDBC URL**: `jdbc:h2:mem:cinema-db`
