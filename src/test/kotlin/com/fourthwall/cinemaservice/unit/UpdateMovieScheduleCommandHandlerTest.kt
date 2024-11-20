@@ -74,4 +74,24 @@ class UpdateMovieScheduleCommandHandlerTest {
         }
         assertEquals("Validation failed", exception.message)
     }
+
+    @Test
+    fun `should throw exception when UpdateMovieScheduleCommand validation fails`() {
+        // Given
+        val movieId = "tt0232500"
+        val userEmail = "invalid-email"
+        val newShowtimes = listOf(
+            Showtime(LocalDateTime.now().plusDays(1), 12.0)
+        )
+        val command = UpdateMovieScheduleCommand(movieId, userEmail, newShowtimes)
+
+        doThrow(IllegalArgumentException("Validation failed"))
+            .`when`(commandValidator).validateCommand(command)
+
+        // When / Then
+        val exception = assertThrows<IllegalArgumentException> {
+            handler.handle(command)
+        }
+        assertEquals("Validation failed", exception.message)
+    }
 }

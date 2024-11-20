@@ -82,4 +82,38 @@ class AddMovieRatingCommandHandlerTest {
         }
         assertEquals("Validation failed", exception.message)
     }
+
+    @Test
+    fun `should validate command when adding movie rating`() {
+        // Given
+        val movieId = "tt0232500"
+        val userEmail = "user@example.com"
+        val rating = 4.0
+        val command = AddMovieRatingCommand(movieId, userEmail, rating)
+
+        // When
+        handler.handle(command)
+
+        // Then
+        verify(commandValidator).validateCommand(command)
+    }
+
+    @Test
+    fun `should throw exception when AddMovieRatingCommand validation fails`() {
+        // Given
+        val movieId = "tt0232500"
+        val userEmail = "invalid-email"
+        val rating = 6.0
+        val command = AddMovieRatingCommand(movieId, userEmail, rating)
+
+        doThrow(IllegalArgumentException("Validation failed"))
+            .`when`(commandValidator).validateCommand(command)
+
+        // When / Then
+        val exception = assertThrows<IllegalArgumentException> {
+            handler.handle(command)
+        }
+        assertEquals("Validation failed", exception.message)
+    }
+
 }
