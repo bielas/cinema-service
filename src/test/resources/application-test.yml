@@ -1,0 +1,4 @@
+imdb:
+  api:
+    url: http://localhost:${wiremock.server.port}
+    api-key: test-api-key

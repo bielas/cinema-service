@@ -34,6 +34,8 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:4.1.4")
 }
 
 kotlin {
