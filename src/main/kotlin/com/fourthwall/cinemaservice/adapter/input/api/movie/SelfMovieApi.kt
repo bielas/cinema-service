@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 @Validated
 @Tag(name = "Trainer operations")
 @RequestMapping("/v1/self/movies")
-//@PreAuthorize("hasRole('CINEMA_OWNER')")
+// todo add role/privilege checker
 interface SelfMovieApi {
     @Operation(summary = "Update movie schedule")
     @PutMapping(path = ["/{movieId}/schedule"])

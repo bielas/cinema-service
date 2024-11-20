@@ -57,7 +57,7 @@ interface MovieApi {
     @ApiResponse(responseCode = "404", description = "Movie not found")
     @ApiResponse(responseCode = "200", description = "Successfully added movie rating")
     @ResponseStatus(HttpStatus.CREATED)
-    // tu jakas autentykacja chyba
+    // todo add role/privilege checker
     fun addMovieRating(
         @PathVariable movieId: String,
         @RequestBody body: AddMovieRatingRequest,

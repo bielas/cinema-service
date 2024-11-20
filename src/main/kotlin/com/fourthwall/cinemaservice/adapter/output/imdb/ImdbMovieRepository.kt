@@ -12,6 +12,7 @@ class ImdbMovieRepository(
     private val imdbProperties: ImdbProperties
 ) : MovieDetailsRepository {
 
+    // todo add cache
     override fun get(id: String): MovieDetails {
         val url = "${imdbProperties.url}/?apikey=${imdbProperties.apiKey}&i=$id"
 
