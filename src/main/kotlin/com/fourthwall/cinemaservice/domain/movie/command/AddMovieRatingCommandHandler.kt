@@ -14,8 +14,7 @@ class AddMovieRatingCommandHandler(
 ) : CommandHandler<Movie, AddMovieRatingCommand> {
     override fun handle(command: AddMovieRatingCommand): Movie {
         commandValidator.validateCommand(command)
-        movieRepository.addRating(command.toMovieRating())
-        return movieRepository.get(command.movieId)
+        return movieRepository.addRating(command.toMovieRating())
     }
 }
 

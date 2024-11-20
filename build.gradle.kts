@@ -26,11 +26,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.swagger.core.v3:swagger-annotations:2.1.13")
     implementation("com.cloudogu.cb:command-bus-spring:2.0.0")
-//    implementation("org.apache.commons:commons-validator:1.7")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation("io.rest-assured:rest-assured:5.3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

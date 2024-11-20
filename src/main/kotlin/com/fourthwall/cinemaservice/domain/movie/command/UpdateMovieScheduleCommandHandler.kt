@@ -13,7 +13,6 @@ class UpdateMovieScheduleCommandHandler(
 ) : CommandHandler<List<Showtime>, UpdateMovieScheduleCommand> {
     override fun handle(command: UpdateMovieScheduleCommand): List<Showtime> {
         commandValidator.validateCommand(command)
-        movieRepository.updateSchedule(command.movieId, command.userEmail, command.showtimes)
-        return movieRepository.get(command.movieId).showtimes
+        return movieRepository.updateSchedule(command.movieId, command.userEmail, command.showtimes).showtimes
     }
 }

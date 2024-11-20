@@ -25,7 +25,7 @@ class DatabaseMovieRepository(
     }
 
     @Transactional
-    override fun addRating(rating: MovieRating) {
+    override fun addRating(rating: MovieRating): Movie {
         val movie =
             movieJPARepository.findByBusinessId(rating.movieId)
                 ?: throw DomainException.DomainNotFoundException("Movie", rating.movieId)
@@ -36,10 +36,11 @@ class DatabaseMovieRepository(
                 rating = rating.rating,
             )
         )
+        return movieDatabaseMappers.toDomain(movie)
     }
 
     @Transactional
-    override fun updateSchedule(movieId: String, userEmail: String, showtimes: List<Showtime>) {
+    override fun updateSchedule(movieId: String, userEmail: String, showtimes: List<Showtime>): Movie {
         val movie =
             movieJPARepository.findByBusinessId(movieId)
                 ?: throw DomainException.DomainNotFoundException("Movie", movieId)
@@ -53,5 +54,6 @@ class DatabaseMovieRepository(
                 )
             )
         }
+        return movieDatabaseMappers.toDomain(movie)
     }
 }
