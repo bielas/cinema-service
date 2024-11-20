@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 
 @Validated
-@Tag(name = "Trainer operations")
+@Tag(name = "Self movie operations")
 @RequestMapping("/v1/self/movies")
 // todo add role/privilege checker
 interface SelfMovieApi {

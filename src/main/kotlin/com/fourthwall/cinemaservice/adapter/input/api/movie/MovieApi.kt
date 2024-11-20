@@ -48,7 +48,7 @@ interface MovieApi {
     fun getMovieShowtimes(@PathVariable movieId: String): ResponseEntity<List<ShowtimeResponse>>
 
     @Operation(summary = "Add movie rating")
-    @PostMapping(path = ["/{movieId}/review"])
+    @PostMapping(path = ["/{movieId}/rating"])
     @ApiResponse(
         responseCode = "400",
         description = "Incorrect input format",
