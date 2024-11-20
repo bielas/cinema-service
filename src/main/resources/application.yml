@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: cinema-service
+  datasource:
+    url: jdbc:h2:mem:cinema-db
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+
+imdb:
+  api:
+    apiKey: e4f33820
+    url: http://www.omdbapi.com
+  #    apiKey: OMDB_API_KEY_PLACEHOLDER
+
