@@ -99,6 +99,7 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 7. Add environment profiles for better managing env variables
 8. Add TestContainers in tests
 9. Improve CI/CD pipeline
+10. Better env variables management (eg. via aws secret manager)
 
 ## Decision to Use suspend Functions and Coroutines
 
