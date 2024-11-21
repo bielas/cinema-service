@@ -5,6 +5,7 @@ import com.fourthwall.cinemaservice.domain.movie.MovieDetails
 import com.fourthwall.cinemaservice.domain.movie.MovieRating
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Showtime
+import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.fourthwall.cinemaservice.shared.exception.CommandValidator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -18,13 +19,15 @@ class AddMovieRatingCommandHandlerTest {
 
     private lateinit var commandValidator: CommandValidator
     private lateinit var movieRepository: MovieRepository
+    private lateinit var movieQuery: MovieQuery
     private lateinit var handler: AddMovieRatingCommandHandler
 
     @BeforeEach
     fun setup() {
         commandValidator = mock(CommandValidator::class.java)
         movieRepository = mock(MovieRepository::class.java)
-        handler = AddMovieRatingCommandHandler(commandValidator, movieRepository)
+        movieQuery = mock(MovieQuery::class.java)
+        handler = AddMovieRatingCommandHandler(commandValidator, movieRepository, movieQuery)
     }
 
     @Test
@@ -51,15 +54,16 @@ class AddMovieRatingCommandHandlerTest {
             )
         )
 
-        val updatedMovie = existingMovie.copy(rating = 4.6)
-
         val expectedMovieRating = MovieRating(
             movieId = movieId,
             userEmail = userEmail,
             rating = rating
         )
 
-        `when`(movieRepository.addRating(expectedMovieRating)).thenReturn(updatedMovie)
+        val updatedMovie = existingMovie.copy(rating = 4.6)
+
+        doNothing().`when`(movieRepository).addRating(expectedMovieRating)
+        `when`(movieQuery.get(movieId)).thenReturn(updatedMovie)
 
         // When
         val result = handler.handle(command)
@@ -67,7 +71,10 @@ class AddMovieRatingCommandHandlerTest {
         // Then
         verify(commandValidator).validateCommand(command)
         verify(movieRepository).addRating(expectedMovieRating)
-        assertEquals(updatedMovie, result)
+        verify(movieQuery).get(movieId)
+        assertEquals(updatedMovie.businessId, result.businessId)
+        assertEquals(4.6, result.rating)
+        assertEquals(existingMovie.details.name, result.details.name)
     }
 
     @Test
@@ -90,6 +97,21 @@ class AddMovieRatingCommandHandlerTest {
         val userEmail = "user@example.com"
         val rating = 4.0
         val command = AddMovieRatingCommand(movieId, userEmail, rating)
+
+        val existingMovie = Movie(
+            businessId = movieId,
+            details = MovieDetails(
+                name = "Fast & Furious",
+                description = "An action-packed movie.",
+                releaseDate = LocalDate.now(),
+                externalRating = 7.8,
+                runtime = "120"
+            ),
+            rating = 4.5,
+            showtimes = emptyList()
+        )
+
+        `when`(movieQuery.get(movieId)).thenReturn(existingMovie)
 
         // When
         handler.handle(command)
@@ -115,5 +137,4 @@ class AddMovieRatingCommandHandlerTest {
         }
         assertEquals("Validation failed", exception.message)
     }
-
 }

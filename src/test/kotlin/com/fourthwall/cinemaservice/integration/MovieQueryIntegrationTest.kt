@@ -3,6 +3,7 @@ package com.fourthwall.cinemaservice.integration
 import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieEntity
 import com.fourthwall.cinemaservice.adapter.output.db.jpa.MovieJPARepository
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
+import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.okJson
@@ -20,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureWireMock(port = 0)
 @Transactional
 @ActiveProfiles("test")
-class DatabaseMovieRepositoryIntegrationTest @Autowired constructor(
-    private val movieRepository: MovieRepository,
+class MovieQueryIntegrationTest @Autowired constructor(
+    private val movieQuery: MovieQuery,
     private val movieJpaRepository: MovieJPARepository
 ) {
 
@@ -56,7 +57,7 @@ class DatabaseMovieRepositoryIntegrationTest @Autowired constructor(
         )
         movieJpaRepository.save(movieEntity)
 
-        val movie = movieRepository.get(movieId)
+        val movie = movieQuery.get(movieId)
 
         assertEquals("Fast & Furious", movie.details.name)
         assertEquals("An action-packed movie about street racing.", movie.details.description)
