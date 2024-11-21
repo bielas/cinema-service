@@ -95,5 +95,5 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 4. Improve error handling with a consistent exception response mechanism.
 6. Explore the use of mapping libraries for reducing boilerplate while maintaining control.
 7. Add environment profiles for better managing env variables
-8. Add CI/CD
-9. Add TestContainers in tests
+8. Add TestContainers in tests
+9. Improve CI/CD pipeline
