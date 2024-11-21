@@ -31,6 +31,7 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.20")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.projectreactor.netty:reactor-netty-http")
+    implementation("org.flywaydb:flyway-core:9.22.0")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
