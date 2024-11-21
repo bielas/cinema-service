@@ -1,6 +1,7 @@
 package com.fourthwall.cinemaservice.domain.movie.query
 
 import com.fourthwall.cinemaservice.domain.movie.Movie
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieDetailsRepository
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import org.springframework.stereotype.Repository
@@ -13,10 +14,12 @@ class MovieQuery(
     fun get(movieId: String): Movie =
         movieRepository.get(movieId).let { movie ->
             Movie(
-                businessId = movieId,
+                metadata = MovieMetadata(
+                    businessId = movieId,
+                    rating = movie.rating,
+                    showtimes = movie.showtimes
+                ),
                 details = movieDetailsRepository.get(movieId),
-                rating = movie.rating,
-                showtimes = movie.showtimes
             )
         }
 }

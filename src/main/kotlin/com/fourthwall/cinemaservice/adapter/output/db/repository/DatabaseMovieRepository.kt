@@ -6,7 +6,7 @@ import com.fourthwall.cinemaservice.adapter.output.db.jpa.MovieJPARepository
 import com.fourthwall.cinemaservice.adapter.output.db.jpa.ShowtimeJPARepository
 import com.fourthwall.cinemaservice.adapter.output.db.repository.mapper.toDomain
 import com.fourthwall.cinemaservice.domain.DomainException
-import com.fourthwall.cinemaservice.domain.movie.MovieBasic
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieRating
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Showtime
@@ -19,7 +19,7 @@ class DatabaseMovieRepository(
     private val showtimeJPARepository: ShowtimeJPARepository,
 ) : MovieRepository {
 
-    override fun get(movieId: String): MovieBasic =
+    override fun get(movieId: String): MovieMetadata =
         movieJPARepository.findByBusinessId(movieId)
             ?.let { toDomain(it) }
             ?: throw DomainException.DomainNotFoundException("Movie", movieId)

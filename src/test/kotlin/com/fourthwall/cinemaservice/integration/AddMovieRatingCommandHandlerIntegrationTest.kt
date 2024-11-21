@@ -28,7 +28,7 @@ class AddMovieRatingCommandHandlerIntegrationTest @Autowired constructor(
         val movie = handler.handle(command)
 
         // Then
-        assertEquals(3.75, movie.rating)
+        assertEquals(3.75, movie.metadata.rating)
     }
 
     @Test

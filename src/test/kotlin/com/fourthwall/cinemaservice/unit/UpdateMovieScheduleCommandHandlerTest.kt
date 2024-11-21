@@ -1,5 +1,6 @@
 import com.fourthwall.cinemaservice.domain.DomainException
 import com.fourthwall.cinemaservice.domain.movie.Movie
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieDetails
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Showtime
@@ -42,7 +43,11 @@ class UpdateMovieScheduleCommandHandlerTest {
         val command = UpdateMovieScheduleCommand(movieId, userEmail, newShowtimes)
 
         val updatedMovie = Movie(
-            businessId = movieId,
+            metadata = MovieMetadata(
+                businessId = movieId,
+                rating = 4.5,
+                showtimes = newShowtimes
+            ),
             details = MovieDetails(
                 name = "Fast & Furious",
                 description = "An action-packed movie.",
@@ -50,8 +55,6 @@ class UpdateMovieScheduleCommandHandlerTest {
                 externalRating = 7.8,
                 runtime = "120"
             ),
-            rating = 4.5,
-            showtimes = newShowtimes
         )
 
         doNothing().`when`(commandValidator).validateCommand(command)
@@ -91,16 +94,18 @@ class UpdateMovieScheduleCommandHandlerTest {
         val command = UpdateMovieScheduleCommand(movieId, userEmail, newShowtimes)
 
         val updatedMovie = Movie(
-            businessId = movieId,
+            metadata = MovieMetadata(
+                businessId = movieId,
+                rating = 4.5,
+                showtimes = newShowtimes
+            ),
             details = MovieDetails(
                 name = "Fast & Furious",
                 description = "An action-packed movie.",
                 releaseDate = LocalDate.now(),
                 externalRating = 7.8,
                 runtime = "120"
-            ),
-            rating = 4.5,
-            showtimes = newShowtimes
+            )
         )
 
         doNothing().`when`(commandValidator).validateCommand(command)
@@ -123,7 +128,6 @@ class UpdateMovieScheduleCommandHandlerTest {
         val command = UpdateMovieScheduleCommand(movieId, userEmail, emptyList())
 
         val updatedMovie = Movie(
-            businessId = movieId,
             details = MovieDetails(
                 name = "Fast & Furious",
                 description = "An action-packed movie.",
@@ -131,8 +135,11 @@ class UpdateMovieScheduleCommandHandlerTest {
                 externalRating = 7.8,
                 runtime = "120"
             ),
-            rating = 4.5,
-            showtimes = emptyList()
+            metadata = MovieMetadata(
+                businessId = movieId,
+                rating = 4.5,
+                showtimes = emptyList()
+            ),
         )
 
         doNothing().`when`(commandValidator).validateCommand(command)

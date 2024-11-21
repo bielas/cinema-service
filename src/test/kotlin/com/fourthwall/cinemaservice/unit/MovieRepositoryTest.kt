@@ -1,6 +1,6 @@
 package com.fourthwall.cinemaservice.unit
 
-import com.fourthwall.cinemaservice.domain.movie.MovieBasic
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Showtime
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,7 +23,7 @@ class MovieRepositoryTest {
     fun `should fetch movie details by ID`() {
         // Given
         val movieId = "tt1234567"
-        val movieBasic = MovieBasic(
+        val movieMetadata = MovieMetadata(
             businessId = movieId,
             rating = 4.5,
             showtimes = listOf(
@@ -32,12 +32,12 @@ class MovieRepositoryTest {
             )
         )
 
-        `when`(movieRepository.get(movieId)).thenReturn(movieBasic)
+        `when`(movieRepository.get(movieId)).thenReturn(movieMetadata)
 
         // When
         val result = movieRepository.get(movieId)
 
         // Then
-        assertEquals(movieBasic, result)
+        assertEquals(movieMetadata, result)
     }
 }

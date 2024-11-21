@@ -1,6 +1,7 @@
 package com.fourthwall.cinemaservice.domain.movie.command
 
 import com.fourthwall.cinemaservice.domain.movie.Movie
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieDetails
 import com.fourthwall.cinemaservice.domain.movie.MovieRating
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
@@ -39,7 +40,14 @@ class AddMovieRatingCommandHandlerTest {
         val command = AddMovieRatingCommand(movieId, userEmail, rating)
 
         val existingMovie = Movie(
-            businessId = movieId,
+            metadata = MovieMetadata(
+                businessId = movieId,
+                rating = 4.5,
+                showtimes = listOf(
+                    Showtime(LocalDateTime.now().plusHours(2), 15.0),
+                    Showtime(LocalDateTime.now().plusHours(4), 20.0)
+                )
+            ),
             details = MovieDetails(
                 name = "Fast & Furious",
                 description = "An action-packed movie.",
@@ -47,11 +55,6 @@ class AddMovieRatingCommandHandlerTest {
                 externalRating = 7.8,
                 runtime = "120"
             ),
-            rating = 4.5,
-            showtimes = listOf(
-                Showtime(LocalDateTime.now().plusHours(2), 15.0),
-                Showtime(LocalDateTime.now().plusHours(4), 20.0)
-            )
         )
 
         val expectedMovieRating = MovieRating(
@@ -60,7 +63,10 @@ class AddMovieRatingCommandHandlerTest {
             rating = rating
         )
 
-        val updatedMovie = existingMovie.copy(rating = 4.6)
+        val updatedMovie = Movie(
+            metadata = existingMovie.metadata.copy(rating = 4.6),
+            details = existingMovie.details
+        )
 
         doNothing().`when`(movieRepository).addRating(expectedMovieRating)
         `when`(movieQuery.get(movieId)).thenReturn(updatedMovie)
@@ -72,8 +78,8 @@ class AddMovieRatingCommandHandlerTest {
         verify(commandValidator).validateCommand(command)
         verify(movieRepository).addRating(expectedMovieRating)
         verify(movieQuery).get(movieId)
-        assertEquals(updatedMovie.businessId, result.businessId)
-        assertEquals(4.6, result.rating)
+        assertEquals(updatedMovie.metadata.businessId, result.metadata.businessId)
+        assertEquals(4.6, result.metadata.rating)
         assertEquals(existingMovie.details.name, result.details.name)
     }
 
@@ -99,7 +105,6 @@ class AddMovieRatingCommandHandlerTest {
         val command = AddMovieRatingCommand(movieId, userEmail, rating)
 
         val existingMovie = Movie(
-            businessId = movieId,
             details = MovieDetails(
                 name = "Fast & Furious",
                 description = "An action-packed movie.",
@@ -107,8 +112,11 @@ class AddMovieRatingCommandHandlerTest {
                 externalRating = 7.8,
                 runtime = "120"
             ),
-            rating = 4.5,
-            showtimes = emptyList()
+            metadata = MovieMetadata(
+                businessId = movieId,
+                rating = 4.5,
+                showtimes = emptyList()
+            ),
         )
 
         `when`(movieQuery.get(movieId)).thenReturn(existingMovie)

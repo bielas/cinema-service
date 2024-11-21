@@ -18,6 +18,6 @@ class UpdateMovieScheduleCommandHandler(
         commandValidator.validateCommand(command)
             .run {
                 movieRepository.updateSchedule(command.movieId, command.userEmail, command.showtimes)
-                movieQuery.get(command.movieId).showtimes
+                movieQuery.get(command.movieId).metadata.showtimes
             }
 }

@@ -3,11 +3,11 @@ package com.fourthwall.cinemaservice.adapter.output.db.repository.mapper
 import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieEntity
 import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieRatingEntity
 import com.fourthwall.cinemaservice.adapter.output.db.entity.ShowtimeEntity
-import com.fourthwall.cinemaservice.domain.movie.MovieBasic
+import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.Showtime
 
-fun toDomain(entity: MovieEntity): MovieBasic {
-    return MovieBasic(
+fun toDomain(entity: MovieEntity): MovieMetadata {
+    return MovieMetadata(
         businessId = entity.businessId,
         rating = calculateAverageRating(entity.ratings),
         showtimes = mapShowtimes(entity.showtimes)

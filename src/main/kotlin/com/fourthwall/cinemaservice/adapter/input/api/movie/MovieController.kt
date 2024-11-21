@@ -25,7 +25,7 @@ class MovieController(
 
     override fun getMovieShowtimes(movieId: String): ResponseEntity<List<ShowtimeResponse>> =
         movieQuery.get(movieId)
-            .showtimes
+            .metadata.showtimes
             .toShowtimeResponse()
             .toResponseEntity()
 
