@@ -18,12 +18,12 @@ class MovieController(
     private val commandBus: CommandBus
 ) : MovieApi {
 
-    override fun getMovie(movieId: String): ResponseEntity<MovieResponse> =
+    override suspend fun getMovie(movieId: String): ResponseEntity<MovieResponse> =
         movieQuery.get(movieId)
             .toMovieResponse()
             .toResponseEntity()
 
-    override fun getMovieShowtimes(movieId: String): ResponseEntity<List<ShowtimeResponse>> =
+    override suspend fun getMovieShowtimes(movieId: String): ResponseEntity<List<ShowtimeResponse>> =
         movieQuery.get(movieId)
             .metadata.showtimes
             .toShowtimeResponse()

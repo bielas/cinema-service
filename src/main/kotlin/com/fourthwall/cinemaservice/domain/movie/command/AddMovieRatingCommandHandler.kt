@@ -6,6 +6,7 @@ import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Movie
 import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.fourthwall.cinemaservice.shared.exception.CommandValidator
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,12 +15,13 @@ class AddMovieRatingCommandHandler(
     private val movieRepository: MovieRepository,
     private val movieQuery: MovieQuery
 ) : CommandHandler<Movie, AddMovieRatingCommand> {
-    override fun handle(command: AddMovieRatingCommand): Movie =
-        commandValidator.validateCommand(command)
-            .run {
-                movieRepository.addRating(command.toMovieRating())
-                movieQuery.get(command.movieId)
-            }
+    override fun handle(command: AddMovieRatingCommand): Movie {
+        return runBlocking {
+            commandValidator.validateCommand(command)
+            movieRepository.addRating(command.toMovieRating())
+            movieQuery.get(command.movieId)
+        }
+    }
 }
 
 fun AddMovieRatingCommand.toMovieRating(): MovieRating {

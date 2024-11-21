@@ -8,6 +8,7 @@ import com.fourthwall.cinemaservice.domain.movie.command.UpdateMovieScheduleComm
 import com.fourthwall.cinemaservice.domain.movie.command.UpdateMovieScheduleCommandHandler
 import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.fourthwall.cinemaservice.shared.exception.CommandValidator
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,7 +33,7 @@ class UpdateMovieScheduleCommandHandlerTest {
     }
 
     @Test
-    fun `should update showtimes for a movie`() {
+    fun `should update showtimes for a movie`() = runBlocking {
         // Given
         val movieId = "tt0232500"
         val userEmail = "user@example.com"
@@ -70,7 +71,7 @@ class UpdateMovieScheduleCommandHandlerTest {
     }
 
     @Test
-    fun `should throw exception when validation fails`() {
+    fun `should throw exception when validation fails`() = runBlocking {
         // Given
         val command = UpdateMovieScheduleCommand("tt0232500", "user@example.com", emptyList())
         doThrow(IllegalArgumentException("Validation failed")).`when`(commandValidator).validateCommand(command)
@@ -83,7 +84,7 @@ class UpdateMovieScheduleCommandHandlerTest {
     }
 
     @Test
-    fun `should replace existing showtimes with new ones`() {
+    fun `should replace existing showtimes with new ones`() = runBlocking {
         // Given
         val movieId = "tt0232500"
         val userEmail = "user@example.com"
@@ -121,7 +122,7 @@ class UpdateMovieScheduleCommandHandlerTest {
     }
 
     @Test
-    fun `should remove all showtimes when empty list provided`() {
+    fun `should remove all showtimes when empty list provided`() = runBlocking {
         // Given
         val movieId = "tt0232500"
         val userEmail = "user@example.com"
@@ -155,7 +156,7 @@ class UpdateMovieScheduleCommandHandlerTest {
     }
 
     @Test
-    fun `should throw exception when movie does not exist`() {
+    fun `should throw exception when movie does not exist`() = runBlocking {
         // Given
         val movieId = "non-existing-id"
         val userEmail = "user@example.com"

@@ -33,7 +33,7 @@ interface MovieApi {
     @ApiResponse(responseCode = "404", description = "Movie not found")
     @ApiResponse(responseCode = "200", description = "Successfully get movie by id")
     @ResponseStatus(HttpStatus.OK)
-    fun getMovie(@PathVariable movieId: String): ResponseEntity<MovieResponse>
+    suspend fun getMovie(@PathVariable movieId: String): ResponseEntity<MovieResponse>
 
     @Operation(summary = "Get movie times by movie id")
     @GetMapping(path = ["/{movieId}/times"])
@@ -45,7 +45,7 @@ interface MovieApi {
     @ApiResponse(responseCode = "404", description = "Movie not found")
     @ApiResponse(responseCode = "200", description = "Successfully get movie times by movie id")
     @ResponseStatus(HttpStatus.OK)
-    fun getMovieShowtimes(@PathVariable movieId: String): ResponseEntity<List<ShowtimeResponse>>
+    suspend fun getMovieShowtimes(@PathVariable movieId: String): ResponseEntity<List<ShowtimeResponse>>
 
     @Operation(summary = "Add movie rating")
     @PostMapping(path = ["/{movieId}/rating"])

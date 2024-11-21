@@ -93,9 +93,19 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 ## Future Enhancements (TODOs)
 1. Implement proper authentication and authorization mechanisms.
 2. Secure endpoints with role-based access control.
-3. Add caching for IMDb API responses in ImdbMovieRepository.
+3. Improve caching for IMDb API responses in ImdbMovieRepository.
 4. Improve error handling with a consistent exception response mechanism.
 6. Explore the use of mapping libraries for reducing boilerplate while maintaining control.
 7. Add environment profiles for better managing env variables
 8. Add TestContainers in tests
 9. Improve CI/CD pipeline
+
+## Decision to Use suspend Functions and Coroutines
+
+Although the current database relies on blocking queries, I chose to use suspend functions and coroutines to future-proof the system:
+
+* If we switch to a non-blocking database (e.g., R2DBC) in the future, the architecture will already be compatible. This minimizes the effort required to implement such changes.
+* Coroutines allow asynchronous operations to be written in a style that looks like synchronous code, making it easier to read, understand, and maintain.
+* Other parts of the system, like external API integrations (e.g., using WebClient), already use non-blocking approaches. Coroutines ensure a consistent architectural style across the application.
+
+This approach ensures flexibility, scalability, and prepares the system for modern, non-blocking technologies without compromising the current implementation.

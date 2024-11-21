@@ -4,6 +4,7 @@ import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieEntity
 import com.fourthwall.cinemaservice.adapter.output.db.jpa.MovieJPARepository
 import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.fourthwall.cinemaservice.stubMovie
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ class MovieQueryIntegrationTest @Autowired constructor(
 ) : IntegrationTestBase() {
 
     @Test
-    fun `should fetch movie details from IMDb and persist them`() {
+    fun `should fetch movie details from IMDb and persist them`() = runBlocking {
         val movieId = "tt1234567"
         stubMovie(movieId)
 

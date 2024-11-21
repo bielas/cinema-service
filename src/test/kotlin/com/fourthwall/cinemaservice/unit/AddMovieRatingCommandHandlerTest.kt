@@ -1,13 +1,14 @@
-package com.fourthwall.cinemaservice.domain.movie.command
-
 import com.fourthwall.cinemaservice.domain.movie.Movie
 import com.fourthwall.cinemaservice.domain.movie.MovieMetadata
 import com.fourthwall.cinemaservice.domain.movie.MovieDetails
 import com.fourthwall.cinemaservice.domain.movie.MovieRating
 import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.Showtime
+import com.fourthwall.cinemaservice.domain.movie.command.AddMovieRatingCommand
+import com.fourthwall.cinemaservice.domain.movie.command.AddMovieRatingCommandHandler
 import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
 import com.fourthwall.cinemaservice.shared.exception.CommandValidator
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,7 +33,7 @@ class AddMovieRatingCommandHandlerTest {
     }
 
     @Test
-    fun `should add movie rating and return updated movie`() {
+    fun `should add movie rating and return updated movie`() = runBlocking {
         // Given
         val movieId = "movie-123"
         val userEmail = "user@example.com"
@@ -84,7 +85,7 @@ class AddMovieRatingCommandHandlerTest {
     }
 
     @Test
-    fun `should throw exception when validation fails`() {
+    fun `should throw exception when validation fails`() = runBlocking {
         // Given
         val command = AddMovieRatingCommand("movie-123", "user@example.com", 4.0)
         doThrow(IllegalArgumentException("Validation failed")).`when`(commandValidator).validateCommand(command)
@@ -97,7 +98,7 @@ class AddMovieRatingCommandHandlerTest {
     }
 
     @Test
-    fun `should validate command when adding movie rating`() {
+    fun `should validate command when adding movie rating`() = runBlocking {
         // Given
         val movieId = "tt0232500"
         val userEmail = "user@example.com"
@@ -129,7 +130,7 @@ class AddMovieRatingCommandHandlerTest {
     }
 
     @Test
-    fun `should throw exception when AddMovieRatingCommand validation fails`() {
+    fun `should throw exception when AddMovieRatingCommand validation fails`() = runBlocking {
         // Given
         val movieId = "tt0232500"
         val userEmail = "invalid-email"

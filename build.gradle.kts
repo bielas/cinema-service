@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.projectreactor.netty:reactor-netty-http")
     implementation("org.flywaydb:flyway-core:9.22.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     runtimeOnly("com.h2database:h2")
     testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

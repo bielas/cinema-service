@@ -11,7 +11,7 @@ class MovieQuery(
     private val movieRepository: MovieRepository,
     private val movieDetailsRepository: MovieDetailsRepository
 ) {
-    fun get(movieId: String): Movie =
+    suspend fun get(movieId: String): Movie =
         movieRepository.get(movieId).let { movie ->
             Movie(
                 metadata = MovieMetadata(
