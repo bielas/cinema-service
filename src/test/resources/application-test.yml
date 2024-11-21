@@ -2,3 +2,12 @@ imdb:
   api:
     url: http://localhost:${wiremock.server.port}
     api-key: test-api-key
+
+spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/
+  datasource:
+    url: jdbc:h2:mem:test-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:

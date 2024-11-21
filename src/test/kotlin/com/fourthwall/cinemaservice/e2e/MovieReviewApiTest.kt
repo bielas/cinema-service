@@ -1,15 +1,15 @@
 package com.fourthwall.cinemaservice.e2e
 
 import com.fourthwall.cinemaservice.adapter.input.api.movie.request.AddMovieRatingRequest
+import com.fourthwall.cinemaservice.integration.IntegrationTestBase
+import com.fourthwall.cinemaservice.stubMovie
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.web.reactive.function.client.WebClient
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MovieReviewApiTest {
+class MovieReviewApiTest : IntegrationTestBase() {
 
     @LocalServerPort
     private var port: Int = 0
@@ -21,6 +21,8 @@ class MovieReviewApiTest {
     @Test
     fun `should add a movie rating`() {
         val movieId = "tt0232500"
+        stubMovie(movieId)
+
         val request = AddMovieRatingRequest(rating = 3.0)
 
         val response = webClient.post()

@@ -1,14 +1,14 @@
 package com.fourthwall.cinemaservice.e2e.showtime
 
+import com.fourthwall.cinemaservice.integration.IntegrationTestBase
+import com.fourthwall.cinemaservice.stubMovie
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.web.reactive.function.client.WebClient
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ShowtimeApiTest {
+class ShowtimeApiTest : IntegrationTestBase() {
 
     @LocalServerPort
     private var port: Int = 0
@@ -20,6 +20,7 @@ class ShowtimeApiTest {
     @Test
     fun `should get movie showtimes`() {
         val movieId = "tt0232500"
+        stubMovie(movieId)
 
         val response = webClient.get()
             .uri(baseUrl("/$movieId/times"))

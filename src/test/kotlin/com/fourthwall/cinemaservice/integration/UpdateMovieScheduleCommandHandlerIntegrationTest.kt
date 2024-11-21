@@ -4,20 +4,19 @@ import com.fourthwall.cinemaservice.domain.DomainException
 import com.fourthwall.cinemaservice.domain.movie.Showtime
 import com.fourthwall.cinemaservice.domain.movie.command.UpdateMovieScheduleCommand
 import com.fourthwall.cinemaservice.domain.movie.command.UpdateMovieScheduleCommandHandler
+import com.fourthwall.cinemaservice.stubMovie
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
-@SpringBootTest
 @Transactional
 class UpdateMovieScheduleCommandHandlerIntegrationTest @Autowired constructor(
     private val handler: UpdateMovieScheduleCommandHandler,
-) {
+) : IntegrationTestBase() {
     @Test
     fun `should update showtimes for a movie`() {
         // Given
@@ -29,6 +28,7 @@ class UpdateMovieScheduleCommandHandlerIntegrationTest @Autowired constructor(
             Showtime(LocalDateTime.now().plusDays(2), 15.0)
         )
         val command = UpdateMovieScheduleCommand(movieId, userEmail, newShowtimes)
+        stubMovie(movieId)
 
         // When
         val updatedShowtimes = handler.handle(command)
@@ -49,6 +49,7 @@ class UpdateMovieScheduleCommandHandlerIntegrationTest @Autowired constructor(
             Showtime(LocalDateTime.now().plusDays(2), 25.0)
         )
         val command = UpdateMovieScheduleCommand(movieId, userEmail, newShowtimes)
+        stubMovie(movieId)
 
         // When
         val updatedShowtimes = handler.handle(command)
@@ -83,6 +84,7 @@ class UpdateMovieScheduleCommandHandlerIntegrationTest @Autowired constructor(
         val movieId = "tt0232500"
         val userEmail = "user@example.com"
         val command = UpdateMovieScheduleCommand(movieId, userEmail, emptyList())
+        stubMovie(movieId)
 
         // When
         val updatedShowtimes = handler.handle(command)

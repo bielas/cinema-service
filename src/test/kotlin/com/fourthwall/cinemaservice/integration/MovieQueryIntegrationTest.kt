@@ -2,53 +2,23 @@ package com.fourthwall.cinemaservice.integration
 
 import com.fourthwall.cinemaservice.adapter.output.db.entity.MovieEntity
 import com.fourthwall.cinemaservice.adapter.output.db.jpa.MovieJPARepository
-import com.fourthwall.cinemaservice.domain.movie.MovieRepository
 import com.fourthwall.cinemaservice.domain.movie.query.MovieQuery
-import com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.okJson
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
+import com.fourthwall.cinemaservice.stubMovie
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
-@SpringBootTest
-@AutoConfigureWireMock(port = 0)
 @Transactional
-@ActiveProfiles("test")
 class MovieQueryIntegrationTest @Autowired constructor(
     private val movieQuery: MovieQuery,
     private val movieJpaRepository: MovieJPARepository
-) {
+) : IntegrationTestBase() {
 
     @Test
     fun `should fetch movie details from IMDb and persist them`() {
         val movieId = "tt1234567"
-        val imdbResponse = """
-            {
-                "Title": "Fast & Furious",
-                "Year": "2009",
-                "Released": "03 Apr 2009",
-                "Runtime": "107 min",
-                "Genre": "Action, Crime, Thriller",
-                "Director": "Justin Lin",
-                "Plot": "An action-packed movie about street racing.",
-                "imdbRating": "7.1",
-                "imdbVotes": "350,000"
-            }
-        """
-        stubFor(
-            get(urlPathEqualTo("/"))
-                .withQueryParam("apikey", equalTo("test-api-key"))
-                .withQueryParam("i", equalTo(movieId))
-                .willReturn(okJson(imdbResponse))
-        )
-
+        stubMovie(movieId)
 
         val movieEntity = MovieEntity(
             businessId = movieId,
@@ -59,9 +29,9 @@ class MovieQueryIntegrationTest @Autowired constructor(
 
         val movie = movieQuery.get(movieId)
 
-        assertEquals("Fast & Furious", movie.details.name)
-        assertEquals("An action-packed movie about street racing.", movie.details.description)
-        assertEquals(7.1, movie.details.externalRating)
-        assertEquals("107 min", movie.details.runtime)
+        assertEquals("The Fast and the Furious", movie.details.name)
+        assertEquals("Los Angeles police officer Brian O'Conner must decide where his loyalty really lies when he becomes enamored with the street racing world he has been sent undercover to destroy.", movie.details.description)
+        assertEquals(6.8, movie.details.externalRating)
+        assertEquals("106 min", movie.details.runtime)
     }
 }
