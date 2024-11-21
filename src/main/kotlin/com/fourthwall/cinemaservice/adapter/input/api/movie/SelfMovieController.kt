@@ -15,22 +15,27 @@ class SelfMovieController(
     private val commandBus: CommandBus,
     private val authenticationFacade: AuthenticationFacade,
 ) : SelfMovieApi {
+
     override fun updateMovieSchedule(
         movieId: String,
         body: UpdateMovieScheduleRequest
-    ): ResponseEntity<List<ShowtimeResponse>> {
-        val userEmail = authenticationFacade.getUserEmail()
-        val command = body.toCommand(userEmail, movieId)
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-            .body(commandBus.execute(command).toShowtimeResponse())
-    }
+    ): ResponseEntity<List<ShowtimeResponse>> =
+        authenticationFacade.getUserEmail()
+            .let { userEmail -> body.toCommand(userEmail, movieId) }
+            .let { commandBus.execute(it) }
+            .toShowtimeResponse()
+            .toResponseEntity(HttpStatus.NO_CONTENT)
 }
+
+private fun List<ShowtimeResponse>.toResponseEntity(status: HttpStatus = HttpStatus.OK): ResponseEntity<List<ShowtimeResponse>> =
+    ResponseEntity.status(status).body(this)
 
 private fun UpdateMovieScheduleRequest.toCommand(
     email: String,
     movieId: String
-) =
+): UpdateMovieScheduleCommand =
     UpdateMovieScheduleCommand(
-        movieId = movieId, userEmail = email, showtimes = showtimes.map { Showtime(it.time, it.price) }
+        movieId = movieId,
+        userEmail = email,
+        showtimes = showtimes.map { Showtime(it.time, it.price) }
     )
-

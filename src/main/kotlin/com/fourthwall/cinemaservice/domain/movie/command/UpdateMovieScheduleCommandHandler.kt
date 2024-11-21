@@ -13,9 +13,11 @@ class UpdateMovieScheduleCommandHandler(
     private val movieRepository: MovieRepository,
     private val movieQuery: MovieQuery
 ) : CommandHandler<List<Showtime>, UpdateMovieScheduleCommand> {
-    override fun handle(command: UpdateMovieScheduleCommand): List<Showtime> {
+
+    override fun handle(command: UpdateMovieScheduleCommand): List<Showtime> =
         commandValidator.validateCommand(command)
-        movieRepository.updateSchedule(command.movieId, command.userEmail, command.showtimes)
-        return movieQuery.get(command.movieId).showtimes
-    }
+            .run {
+                movieRepository.updateSchedule(command.movieId, command.userEmail, command.showtimes)
+                movieQuery.get(command.movieId).showtimes
+            }
 }

@@ -14,11 +14,12 @@ class AddMovieRatingCommandHandler(
     private val movieRepository: MovieRepository,
     private val movieQuery: MovieQuery
 ) : CommandHandler<Movie, AddMovieRatingCommand> {
-    override fun handle(command: AddMovieRatingCommand): Movie {
+    override fun handle(command: AddMovieRatingCommand): Movie =
         commandValidator.validateCommand(command)
-        movieRepository.addRating(command.toMovieRating())
-        return movieQuery.get(command.movieId)
-    }
+            .run {
+                movieRepository.addRating(command.toMovieRating())
+                movieQuery.get(command.movieId)
+            }
 }
 
 fun AddMovieRatingCommand.toMovieRating(): MovieRating {

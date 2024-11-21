@@ -17,21 +17,31 @@ class MovieController(
     private val movieQuery: MovieQuery,
     private val commandBus: CommandBus
 ) : MovieApi {
+
     override fun getMovie(movieId: String): ResponseEntity<MovieResponse> =
-        movieQuery.get(movieId).let { ResponseEntity.ok(it.toMovieResponse()) }
+        movieQuery.get(movieId)
+            .toMovieResponse()
+            .toResponseEntity()
 
     override fun getMovieShowtimes(movieId: String): ResponseEntity<List<ShowtimeResponse>> =
-        movieQuery.get(movieId).showtimes.toShowtimeResponse().let { ResponseEntity.ok(it) }
+        movieQuery.get(movieId)
+            .showtimes
+            .toShowtimeResponse()
+            .toResponseEntity()
 
-    override fun addMovieRating(movieId: String, body: AddMovieRatingRequest): ResponseEntity<MovieResponse> {
-        val userEmail = authenticationFacade.getUserEmail()
-        val command = body.toCommand(userEmail, movieId)
-        return ResponseEntity.status(HttpStatus.CREATED).body(commandBus.execute(command).toMovieResponse())
-    }
+    override fun addMovieRating(movieId: String, body: AddMovieRatingRequest): ResponseEntity<MovieResponse> =
+        authenticationFacade.getUserEmail()
+            .let { userEmail -> body.toCommand(userEmail, movieId) }
+            .let { commandBus.execute(it) }
+            .toMovieResponse()
+            .toResponseEntity(HttpStatus.CREATED)
 }
 
-private fun AddMovieRatingRequest.toCommand(
-    email: String, movieId: String
-) = AddMovieRatingCommand(
-    movieId = movieId, userEmail = email, rating = rating
-)
+private fun MovieResponse.toResponseEntity(status: HttpStatus = HttpStatus.OK): ResponseEntity<MovieResponse> =
+    ResponseEntity.status(status).body(this)
+
+private fun List<ShowtimeResponse>.toResponseEntity(status: HttpStatus = HttpStatus.OK): ResponseEntity<List<ShowtimeResponse>> =
+    ResponseEntity.status(status).body(this)
+
+private fun AddMovieRatingRequest.toCommand(email: String, movieId: String): AddMovieRatingCommand =
+    AddMovieRatingCommand(movieId = movieId, userEmail = email, rating = rating)
