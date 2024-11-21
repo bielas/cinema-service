@@ -31,7 +31,6 @@ spring:
 
 imdb:
   api:
-    apiKey: e4f33820
+    apiKey: IMDB_API_KEY
     url: http://www.omdbapi.com
-  #    apiKey: OMDB_API_KEY_PLACEHOLDER
 

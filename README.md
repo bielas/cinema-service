@@ -12,7 +12,7 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 
 ### Run the Application
 ```bash
-./gradlew bootRun
+./gradlew bootRun --args='--imdb.api.apiKey=IMDB_API_KEY'
 ```
 
 ## Testing
@@ -94,3 +94,4 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 3. Add caching for IMDb API responses in ImdbMovieRepository.
 4. Improve error handling with a consistent exception response mechanism.
 6. Explore the use of mapping libraries for reducing boilerplate while maintaining control.
+7. Add environment profiles for better managing env variables
