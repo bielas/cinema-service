@@ -33,13 +33,15 @@ dependencies {
     implementation("io.projectreactor.netty:reactor-netty-http")
     implementation("org.flywaydb:flyway-core:9.22.0")
     runtimeOnly("com.h2database:h2")
+    testImplementation("com.tngtech.archunit:archunit-junit5:0.23.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:4.1.4")
 }
 
