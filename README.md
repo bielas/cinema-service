@@ -36,6 +36,8 @@ The **Cinema Service Application** is designed to manage movie schedules, pricin
 ### Flyway Migrations
 * Flyway ensures the database schema is versioned and consistent. Migration scripts are located in:
 
+### Continuous Integration (CI)
+* Runs every commit pushed to main branch and pull requests to main branch
 
 ## Features
 
